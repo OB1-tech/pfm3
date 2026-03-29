@@ -138,7 +138,7 @@ footer{background:var(--navydark);padding:40px 6%;border-top:1px solid rgba(201,
 .fl:hover{color:var(--gold);background:rgba(201,168,76,.08)}
 
 /* ANIMATION */
-.fade{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.fade{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}.fade.in{opacity:1;transform:none}
 .fade.in{opacity:1;transform:none}
 
 /* RESPONSIVE */
@@ -157,6 +157,7 @@ footer{background:var(--navydark);padding:40px 6%;border-top:1px solid rgba(201,
   .cta-section{padding:36px 24px}
 }
 </style>
+<noscript><style>.fade{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body>
 
@@ -319,10 +320,16 @@ footer{background:var(--navydark);padding:40px 6%;border-top:1px solid rgba(201,
 </footer>
 
 <script>
+// Mark all fade elements visible immediately as fallback
+document.querySelectorAll('.fade').forEach(el => el.classList.add('in'));
+// Then enhance with scroll animation
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+}, { threshold: 0.05 });
+document.querySelectorAll('.fade').forEach(el => {
+  el.classList.remove('in');
+  obs.observe(el);
+});
 </script>
 </body>
 </html>
