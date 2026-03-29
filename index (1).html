@@ -4,332 +4,165 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>PFM — Personal Finance Manager | Brian Omae · KCAU 2026</title>
-<meta name="description" content="A full-stack Personal Finance Manager web app — track income, expenses, budgets and savings goals. Final year project by Brian Omae, KCA University 2026."/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#1E2761;--navydark:#141A45;--navymid:#2A3875;
-  --gold:#C9A84C;--goldlt:#E8C97A;--goldpale:#FDF6E3;
-  --white:#fff;--bg:#F4F7FF;
-  --gray:#94A3B8;--graydark:#475569;--gray900:#0F172A;
-  --green:#16A34A;--red:#DC2626;
-  --font-d:'Playfair Display',serif;--font-b:'Plus Jakarta Sans',sans-serif;
-  --r:16px;--rsm:10px;--rlg:24px;
-  --sh:0 4px 24px rgba(30,39,97,.12);
-  --tr:.25s cubic-bezier(.4,0,.2,1);
-}
-html{font-size:16px;scroll-behavior:smooth}
-body{font-family:var(--font-b);background:var(--bg);color:var(--gray900);overflow-x:hidden}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#F4F7FF;color:#0F172A}
 a{text-decoration:none}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:rgba(20,26,69,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,.12)}
-.nav-brand{display:flex;align-items:center;gap:10px}
-.nav-icon{width:34px;height:34px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem}
-.nav-name{font-family:var(--font-d);color:var(--white);font-size:1rem}
-.nav-links{display:flex;align-items:center;gap:4px}
-.nl{color:rgba(255,255,255,.55);font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:var(--rsm);transition:var(--tr)}
-.nl:hover{color:var(--white);background:rgba(255,255,255,.08)}
-.nav-btn{background:var(--gold);color:var(--navydark);padding:8px 18px;border-radius:var(--rsm);font-size:.82rem;font-weight:800;transition:var(--tr)}
-.nav-btn:hover{background:var(--goldlt);transform:translateY(-1px)}
-
-/* HERO */
-.hero{min-height:100vh;background:linear-gradient(145deg,var(--navydark) 0%,var(--navy) 55%,var(--navymid) 100%);display:flex;align-items:center;padding:100px 6% 70px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;border:1px solid rgba(201,168,76,.07);top:-200px;right:-150px;pointer-events:none}
-.hero::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;border:1px solid rgba(201,168,76,.05);bottom:-80px;left:-80px;pointer-events:none}
-.hero-inner{max-width:1160px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;position:relative;z-index:1}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:99px;padding:5px 14px;margin-bottom:22px}
-.hb-dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
-.hb-txt{font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--goldlt)}
-h1{font-family:var(--font-d);font-size:3rem;line-height:1.1;color:var(--white);margin-bottom:18px}
-h1 em{color:var(--goldlt);font-style:italic}
-.hero-p{color:rgba(255,255,255,.6);font-size:.95rem;line-height:1.75;margin-bottom:32px;max-width:460px}
-.hero-meta{display:flex;flex-direction:column;gap:8px;margin-bottom:32px}
-.hm{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.5);font-size:.8rem}
-.hm-icon{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn-main{background:var(--gold);color:var(--navydark);padding:13px 26px;border-radius:var(--rsm);font-weight:800;font-size:.88rem;display:inline-flex;align-items:center;gap:8px;transition:var(--tr)}
-.btn-main:hover{background:var(--goldlt);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.4)}
-.btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.25);padding:12px 22px;border-radius:var(--rsm);font-weight:700;font-size:.88rem;transition:var(--tr)}
-.btn-outline:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.5)}
-
-/* HERO CARD */
-.hero-card{background:rgba(255,255,255,.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.09);border-radius:var(--rlg);padding:22px;box-shadow:0 8px 40px rgba(0,0,0,.3)}
-.hc-title{font-family:var(--font-d);color:var(--white);font-size:.9rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.hc-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.hc-kpi{background:rgba(255,255,255,.06);border-radius:var(--rsm);padding:10px 12px}
-.hc-kpi-l{font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);font-weight:700;margin-bottom:3px}
-.hc-kpi-v{font-family:var(--font-d);font-size:1.1rem;font-weight:700}
-.hc-kpi-v.g{color:#4ADE80}
-.hc-kpi-v.r{color:#F87171}
-.hc-kpi-v.gold{color:var(--goldlt)}
-.hc-kpi-v.w{color:var(--white)}
-.prog-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.prog-lbl{font-size:.68rem;color:rgba(255,255,255,.45);width:88px;flex-shrink:0}
-.prog-track{flex:1;height:5px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
-.prog-fill{height:100%;border-radius:99px}
-.prog-pct{font-size:.65rem;color:rgba(255,255,255,.35);width:28px;text-align:right}
-.hc-alert{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);border-radius:var(--rsm);padding:8px 12px;font-size:.72rem;color:#FCA5A5;margin-top:10px;display:flex;align-items:center;gap:6px}
-
-/* SECTIONS */
-section{padding:88px 6%}
-.inner{max-width:1160px;margin:0 auto}
-.stag{display:inline-flex;align-items:center;gap:7px;background:rgba(30,39,97,.08);border:1px solid rgba(30,39,97,.1);border-radius:99px;padding:4px 13px;margin-bottom:14px}
-.stag-txt{font-size:.67rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--navy)}
-h2{font-family:var(--font-d);font-size:2.2rem;color:var(--navy);line-height:1.15;margin-bottom:12px}
-h2 em{color:var(--gold);font-style:italic}
-.sec-sub{color:var(--graydark);font-size:.92rem;line-height:1.7;max-width:520px}
-
-/* STATS BAR */
-.stats-bar{background:var(--navy);border-radius:var(--r);padding:32px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:52px}
-.stat-item{text-align:center}
-.stat-val{font-family:var(--font-d);font-size:2.4rem;color:var(--gold);font-weight:700;margin-bottom:4px}
-.stat-lbl{font-size:.75rem;color:rgba(255,255,255,.5);font-weight:600;text-transform:uppercase;letter-spacing:.07em}
-
-/* FEATURES */
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:50px}
-.feat-card{background:var(--white);border-radius:var(--r);padding:22px;box-shadow:var(--sh);border:1px solid rgba(30,39,97,.06);transition:var(--tr)}
-.feat-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(30,39,97,.15);border-color:var(--gold)}
-.feat-icon{font-size:1.7rem;margin-bottom:12px}
-.feat-title{font-family:var(--font-d);font-size:.98rem;color:var(--navy);margin-bottom:7px}
-.feat-text{font-size:.8rem;color:var(--graydark);line-height:1.65}
-.feat-tag{display:inline-flex;margin-top:11px;padding:3px 9px;background:var(--goldpale);color:#A8893C;border-radius:99px;font-size:.67rem;font-weight:700}
-
-/* TECH */
-.tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:50px}
-.tech-card{background:var(--white);border-radius:var(--r);padding:18px;border:1.5px solid rgba(30,39,97,.08);text-align:center;transition:var(--tr)}
-.tech-card:hover{border-color:var(--navy);box-shadow:var(--sh)}
-.tc-icon{font-size:1.8rem;margin-bottom:9px}
-.tc-name{font-weight:800;color:var(--navy);font-size:.88rem;margin-bottom:3px}
-.tc-role{font-size:.7rem;color:var(--gray);margin-bottom:8px}
-.tc-ver{display:inline-flex;padding:2px 9px;background:var(--navy);color:var(--white);border-radius:99px;font-size:.65rem;font-weight:700}
-
-/* CTA */
-.cta-section{background:linear-gradient(135deg,var(--navydark),var(--navy));border-radius:var(--rlg);padding:56px 48px;text-align:center;position:relative;overflow:hidden}
-.cta-section::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;border:1px solid rgba(201,168,76,.08);top:-150px;right:-100px}
-.cta-section h2{color:var(--white);font-size:2rem;margin-bottom:10px}
-.cta-section p{color:rgba(255,255,255,.55);margin-bottom:28px;font-size:.92rem}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;background:#141A45;border-bottom:2px solid #C9A84C}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-icon{width:32px;height:32px;background:#C9A84C;border-radius:8px;text-align:center;line-height:32px;font-size:.9rem}
+.nav-name{color:#fff;font-size:1rem;font-weight:bold;font-family:Georgia,serif}
+.nav-btn{background:#C9A84C;color:#141A45;padding:8px 18px;border-radius:8px;font-size:.82rem;font-weight:bold}
+.hero{min-height:100vh;background:#1E2761;display:flex;align-items:center;padding:90px 5% 60px}
+.hero-inner{max-width:860px;margin:0 auto;width:100%}
+.hero-badge{display:inline-block;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:99px;padding:5px 16px;margin-bottom:20px;font-size:.7rem;font-weight:bold;letter-spacing:.1em;text-transform:uppercase;color:#E8C97A}
+h1{font-family:Georgia,serif;font-size:3rem;line-height:1.15;color:#fff;margin-bottom:16px}
+h1 span{color:#C9A84C;font-style:italic}
+.hero-sub{color:rgba(255,255,255,.65);font-size:.95rem;line-height:1.75;margin-bottom:24px;max-width:540px}
+.meta-row{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.55);font-size:.82rem;margin-bottom:8px}
+.meta-icon{width:26px;height:26px;background:rgba(255,255,255,.08);border-radius:7px;text-align:center;line-height:26px;font-size:.8rem;flex-shrink:0}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn-gold{background:#C9A84C;color:#141A45;padding:13px 26px;border-radius:8px;font-weight:bold;font-size:.9rem;display:inline-block}
+.btn-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.3);padding:11px 22px;border-radius:8px;font-weight:bold;font-size:.9rem;display:inline-block}
+.stats-bar{background:#fff;padding:36px 5%}
+.stats-inner{max-width:860px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stat{background:#1E2761;border-radius:12px;padding:20px;text-align:center}
+.stat-val{font-size:2.2rem;font-weight:bold;color:#C9A84C;margin-bottom:4px;font-family:Georgia,serif}
+.stat-lbl{font-size:.7rem;color:rgba(255,255,255,.5);font-weight:bold;text-transform:uppercase;letter-spacing:.07em}
+.section{padding:70px 5%}
+.section-inner{max-width:860px;margin:0 auto}
+.stag{display:inline-block;background:#C9A84C;color:#141A45;padding:4px 14px;border-radius:99px;font-size:.68rem;font-weight:bold;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px}
+h2{font-family:Georgia,serif;font-size:2rem;color:#1E2761;line-height:1.2;margin-bottom:10px}
+h2 span{color:#C9A84C;font-style:italic}
+.sec-sub{color:#475569;font-size:.9rem;line-height:1.7;max-width:520px;margin-bottom:36px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.feat-card{background:#fff;border-radius:12px;padding:20px;border:1px solid #E2E8F0;border-top:3px solid #C9A84C}
+.feat-icon{font-size:1.6rem;margin-bottom:10px}
+.feat-title{font-size:.95rem;font-weight:bold;color:#1E2761;margin-bottom:6px;font-family:Georgia,serif}
+.feat-text{font-size:.78rem;color:#475569;line-height:1.65}
+.feat-tag{display:inline-block;margin-top:10px;padding:2px 9px;background:#FDF6E3;color:#A8893C;border-radius:99px;font-size:.65rem;font-weight:bold}
+.tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tech-card{background:#fff;border-radius:12px;padding:16px;border:1.5px solid #E2E8F0;text-align:center}
+.tc-icon{font-size:1.6rem;margin-bottom:8px}
+.tc-name{font-weight:bold;color:#1E2761;font-size:.85rem;margin-bottom:2px}
+.tc-role{font-size:.68rem;color:#94A3B8;margin-bottom:7px}
+.tc-ver{display:inline-block;padding:2px 8px;background:#1E2761;color:#fff;border-radius:99px;font-size:.62rem;font-weight:bold}
+.cta-box{background:#141A45;border-radius:16px;padding:48px;text-align:center;max-width:860px;margin:0 auto}
+.cta-box h2{color:#fff}
+.cta-box p{color:rgba(255,255,255,.55);margin-bottom:24px;font-size:.9rem}
 .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.cta-primary{background:var(--gold);color:var(--navydark);padding:13px 28px;border-radius:var(--rsm);font-weight:800;font-size:.9rem;transition:var(--tr)}
-.cta-primary:hover{background:var(--goldlt);transform:translateY(-2px)}
-.cta-ghost{background:rgba(255,255,255,.08);color:var(--white);border:1.5px solid rgba(255,255,255,.2);padding:12px 24px;border-radius:var(--rsm);font-weight:700;font-size:.9rem;transition:var(--tr)}
-.cta-ghost:hover{background:rgba(255,255,255,.15)}
-
-/* TEAM */
-.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:50px;max-width:680px}
-.team-card{background:var(--white);border-radius:var(--r);padding:22px;box-shadow:var(--sh);border:1px solid rgba(30,39,97,.06);display:flex;align-items:center;gap:16px}
-.team-av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:1.1rem;font-weight:700;flex-shrink:0}
-.team-av.navy{background:var(--navy);color:var(--white)}
-.team-av.gold{background:var(--gold);color:var(--navydark)}
-.team-name{font-family:var(--font-d);font-size:.95rem;color:var(--navy);margin-bottom:2px}
-.team-role{font-size:.72rem;color:var(--gray);margin-bottom:5px}
-.team-detail{font-size:.72rem;color:var(--graydark);line-height:1.5}
-
-/* FOOTER */
-footer{background:var(--navydark);padding:40px 6%;border-top:1px solid rgba(201,168,76,.08)}
-.footer-inner{max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
-.footer-brand{display:flex;align-items:center;gap:10px}
-.fi{width:30px;height:30px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem}
-.fn{font-family:var(--font-d);color:var(--white);font-size:.9rem}
-.footer-txt{color:rgba(255,255,255,.3);font-size:.73rem;line-height:1.6}
-.footer-links{display:flex;gap:4px;flex-wrap:wrap}
-.fl{color:rgba(255,255,255,.35);font-size:.73rem;padding:5px 10px;border-radius:6px;transition:var(--tr)}
-.fl:hover{color:var(--gold);background:rgba(201,168,76,.08)}
-
-/* ANIMATION */
-.fade{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}.fade.in{opacity:1;transform:none}
-.fade.in{opacity:1;transform:none}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .hero-inner{grid-template-columns:1fr;gap:40px}
-  .hero-card{display:none}
-  .stats-bar{grid-template-columns:1fr 1fr}
-  .feat-grid,.tech-grid{grid-template-columns:1fr 1fr}
-  .nav-links{display:none}
-  h1{font-size:2.2rem}
-  h2{font-size:1.8rem}
-}
-@media(max-width:560px){
-  .feat-grid,.tech-grid,.stats-bar,.team-grid{grid-template-columns:1fr}
-  section{padding:60px 5%}
-  .cta-section{padding:36px 24px}
-}
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:620px}
+.team-card{background:#fff;border-radius:12px;padding:20px;border:1px solid #E2E8F0;display:flex;align-items:center;gap:14px}
+.team-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:bold;flex-shrink:0}
+.av-navy{background:#1E2761;color:#fff}
+.av-gold{background:#C9A84C;color:#141A45}
+.team-name{font-weight:bold;color:#1E2761;font-size:.92rem;font-family:Georgia,serif;margin-bottom:2px}
+.team-role{font-size:.7rem;color:#94A3B8;margin-bottom:4px}
+.team-detail{font-size:.7rem;color:#475569;line-height:1.5}
+footer{background:#141A45;padding:36px 5%;border-top:2px solid rgba(201,168,76,.12)}
+.footer-inner{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-name{color:#fff;font-size:.9rem;font-weight:bold;font-family:Georgia,serif}
+.footer-txt{color:rgba(255,255,255,.3);font-size:.72rem;line-height:1.6;margin-top:4px}
+.footer-links{display:flex;gap:4px}
+.fl{color:rgba(255,255,255,.4);font-size:.75rem;padding:5px 10px}
+@media(max-width:800px){h1{font-size:2.1rem}.stats-inner,.feat-grid,.tech-grid{grid-template-columns:1fr 1fr}.team-grid{grid-template-columns:1fr}}
+@media(max-width:500px){h1{font-size:1.7rem}.stats-inner,.feat-grid,.tech-grid{grid-template-columns:1fr}.section{padding:50px 5%}}
 </style>
-<noscript><style>.fade{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body>
-
-<!-- NAV -->
 <nav>
-  <a class="nav-brand" href="#">
-    <div class="nav-icon">💰</div>
-    <div class="nav-name">PFM</div>
-  </a>
-  <div class="nav-links">
-    <a class="nl" href="#features">Features</a>
-    <a class="nl" href="#tech">Tech Stack</a>
-    <a class="nl" href="#team">Team</a>
-    <a class="nav-btn" href="app.html">Launch App →</a>
-  </div>
+  <div class="nav-logo"><div class="nav-icon">💰</div><div class="nav-name">PFM</div></div>
+  <a class="nav-btn" href="app.html">Launch App →</a>
 </nav>
-
-<!-- HERO -->
-<section class="hero">
+<div class="hero">
   <div class="hero-inner">
-    <div>
-      <div class="hero-badge"><div class="hb-dot"></div><span class="hb-txt">BSc. Software Development · Final Year Project · KCAU 2026</span></div>
-      <h1>Personal Finance<br/><em>Manager</em></h1>
-      <p class="hero-p">Track every shilling, set smart budgets, and achieve your savings goals — all in one beautiful browser-based dashboard. No installation required.</p>
-      <div class="hero-meta">
-        <div class="hm"><div class="hm-icon">👤</div>Brian Omae · Registration No. 22/03810</div>
-        <div class="hm"><div class="hm-icon">🏫</div>KCA University — Faculty of Computing & Information Management</div>
-        <div class="hm"><div class="hm-icon">👨‍🏫</div>Supervisor: Mr. Joseph Muigai Kuria</div>
-      </div>
-      <div class="hero-btns">
-        <a class="btn-main" href="app.html">🚀 Launch Live Demo</a>
-        <a class="btn-outline" href="#features">View Features ↓</a>
-      </div>
-    </div>
-    <div class="hero-card">
-      <div class="hc-title">💰 March 2026 Dashboard</div>
-      <div class="hc-kpis">
-        <div class="hc-kpi"><div class="hc-kpi-l">Income</div><div class="hc-kpi-v g">KES 105K</div></div>
-        <div class="hc-kpi"><div class="hc-kpi-l">Expenses</div><div class="hc-kpi-v r">KES 65K</div></div>
-        <div class="hc-kpi"><div class="hc-kpi-l">Balance</div><div class="hc-kpi-v gold">KES 40K</div></div>
-        <div class="hc-kpi"><div class="hc-kpi-l">Savings Rate</div><div class="hc-kpi-v w">38%</div></div>
-      </div>
-      <div class="prog-row"><span class="prog-lbl">Food & Dining</span><div class="prog-track"><div class="prog-fill" style="width:89%;background:#EF4444"></div></div><span class="prog-pct">89%</span></div>
-      <div class="prog-row"><span class="prog-lbl">Transport</span><div class="prog-track"><div class="prog-fill" style="width:55%;background:#C9A84C"></div></div><span class="prog-pct">55%</span></div>
-      <div class="prog-row"><span class="prog-lbl">Emergency Fund</span><div class="prog-track"><div class="prog-fill" style="width:42%;background:#3D52A0"></div></div><span class="prog-pct">42%</span></div>
-      <div class="hc-alert">🚨 Budget warning: Food &amp; Dining at 89%</div>
+    <div class="hero-badge">BSc. Software Development · Final Year Project · KCAU 2026</div>
+    <h1>Personal Finance<br/><span>Manager</span></h1>
+    <p class="hero-sub">Track every shilling, set smart budgets, and achieve your savings goals — all in one browser-based dashboard. No installation required.</p>
+    <div class="meta-row"><div class="meta-icon">👤</div>Brian Omae · Registration No. 22/03810</div>
+    <div class="meta-row"><div class="meta-icon">🏫</div>KCA University — Faculty of Computing and Information Management</div>
+    <div class="meta-row"><div class="meta-icon">👨‍🏫</div>Supervisor: Mr. Joseph Muigai Kuria</div>
+    <div class="hero-btns">
+      <a class="btn-gold" href="app.html">Launch Live Demo</a>
+      <a class="btn-outline" href="#features">View Features</a>
     </div>
   </div>
-</section>
-
-<!-- STATS -->
-<section style="padding:50px 6%;background:var(--white)">
-  <div class="inner">
-    <div class="stats-bar fade">
-      <div class="stat-item"><div class="stat-val">5</div><div class="stat-lbl">Database Tables</div></div>
-      <div class="stat-item"><div class="stat-val">18+</div><div class="stat-lbl">API Endpoints</div></div>
-      <div class="stat-item"><div class="stat-val">9</div><div class="stat-lbl">Core Features</div></div>
-      <div class="stat-item"><div class="stat-val">100%</div><div class="stat-lbl">Browser-based</div></div>
-    </div>
+</div>
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-val">5</div><div class="stat-lbl">Database Tables</div></div>
+    <div class="stat"><div class="stat-val">18+</div><div class="stat-lbl">API Endpoints</div></div>
+    <div class="stat"><div class="stat-val">9</div><div class="stat-lbl">Core Features</div></div>
+    <div class="stat"><div class="stat-val">100%</div><div class="stat-lbl">Browser-based</div></div>
   </div>
-</section>
-
-<!-- FEATURES -->
-<section id="features" style="background:var(--bg)">
-  <div class="inner">
-    <div class="stag"><span class="stag-txt">Features</span></div>
-    <h2>Everything you need to manage<br/><em>your finances</em></h2>
-    <p class="sec-sub">Nine core features covering authentication, transaction management, budgets, goals, charts, and reporting.</p>
-    <div class="feat-grid fade">
+</div>
+<div class="section" id="features" style="background:#F4F7FF">
+  <div class="section-inner">
+    <div class="stag">Features</div>
+    <h2>Everything you need to manage <span>your finances</span></h2>
+    <p class="sec-sub">Nine core features covering authentication, transactions, budgets, goals, charts and reporting.</p>
+    <div class="feat-grid">
       <div class="feat-card"><div class="feat-icon">🔐</div><div class="feat-title">Secure Authentication</div><div class="feat-text">JWT-based login and registration via Supabase Auth. Passwords hashed with bcrypt. Sessions managed automatically.</div><span class="feat-tag">Supabase Auth</span></div>
       <div class="feat-card"><div class="feat-icon">💳</div><div class="feat-title">Transaction Tracking</div><div class="feat-text">Full CRUD for income and expense records. Category tagging, date filters, keyword search, and sortable table view.</div><span class="feat-tag">Core Feature</span></div>
-      <div class="feat-card"><div class="feat-icon">🎯</div><div class="feat-title">Budget Management</div><div class="feat-text">Set monthly spending limits per category. Real-time progress bars. Automatic alerts at 80% and 100% thresholds.</div><span class="feat-tag">Alert Engine</span></div>
+      <div class="feat-card"><div class="feat-icon">🎯</div><div class="feat-title">Budget Management</div><div class="feat-text">Monthly spending limits per category. Real-time progress bars. Automatic alerts at 80% and 100% thresholds.</div><span class="feat-tag">Alert Engine</span></div>
       <div class="feat-card"><div class="feat-icon">⭐</div><div class="feat-title">Savings Goals</div><div class="feat-text">Create savings targets with emoji icons, target dates, and contribution tracking. SVG ring progress indicators.</div><span class="feat-tag">Visual Progress</span></div>
-      <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">Dashboard & Charts</div><div class="feat-text">Income vs expenses bar chart, expense doughnut, budget vs actual comparison — all powered by Chart.js 4.4.</div><span class="feat-tag">Chart.js</span></div>
-      <div class="feat-card"><div class="feat-icon">📄</div><div class="feat-title">Financial Reports</div><div class="feat-text">Date-range reports with KPI summary, category breakdown, and full transaction list. Export to CSV or PDF.</div><span class="feat-tag">Export</span></div>
+      <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">Dashboard and Charts</div><div class="feat-text">Income vs expenses bar chart, expense doughnut, budget vs actual comparison — all powered by Chart.js 4.4.</div><span class="feat-tag">Chart.js</span></div>
+      <div class="feat-card"><div class="feat-icon">📄</div><div class="feat-title">Financial Reports</div><div class="feat-text">Date-range reports with KPI summary and category breakdown. Export to CSV download or PDF print.</div><span class="feat-tag">Export</span></div>
       <div class="feat-card"><div class="feat-icon">🔔</div><div class="feat-title">Notifications</div><div class="feat-text">In-app notification centre with unread badge counter. Budget warnings and goal achievement messages.</div><span class="feat-tag">Real-time</span></div>
       <div class="feat-card"><div class="feat-icon">📱</div><div class="feat-title">Mobile Responsive</div><div class="feat-text">Fully responsive with collapsible sidebar and fixed mobile bottom navigation. Works on iPad and smartphone.</div><span class="feat-tag">Mobile First</span></div>
       <div class="feat-card"><div class="feat-icon">🔌</div><div class="feat-title">Offline Demo Mode</div><div class="feat-text">Works without a backend using in-browser sample data. Perfect for presentations without internet access.</div><span class="feat-tag">Offline Ready</span></div>
     </div>
   </div>
-</section>
-
-<!-- TECH -->
-<section id="tech" style="background:var(--white)">
-  <div class="inner">
-    <div class="stag"><span class="stag-txt">Technology</span></div>
-    <h2>Built with a <em>modern stack</em></h2>
-    <p class="sec-sub">Lean, professional tools chosen for reliability, free hosting, and suitability for a final year project demonstration.</p>
-    <div class="tech-grid fade">
+</div>
+<div class="section" style="background:#fff">
+  <div class="section-inner">
+    <div class="stag">Technology</div>
+    <h2>Built with a <span>modern stack</span></h2>
+    <p class="sec-sub">Lean, professional tools chosen for reliability and free hosting.</p>
+    <div class="tech-grid">
       <div class="tech-card"><div class="tc-icon">🌐</div><div class="tc-name">HTML5 / CSS3</div><div class="tc-role">Frontend Structure</div><div class="tc-ver">Single-file app</div></div>
-      <div class="tech-card"><div class="tc-icon">⚡</div><div class="tc-name">JavaScript</div><div class="tc-role">Frontend Logic</div><div class="tc-ver">ES2022 async/await</div></div>
+      <div class="tech-card"><div class="tc-icon">⚡</div><div class="tc-name">JavaScript</div><div class="tc-role">Frontend Logic</div><div class="tc-ver">ES2022</div></div>
       <div class="tech-card"><div class="tc-icon">📊</div><div class="tc-name">Chart.js</div><div class="tc-role">Data Visualisation</div><div class="tc-ver">v4.4.1</div></div>
-      <div class="tech-card"><div class="tc-icon">🟢</div><div class="tc-name">Supabase</div><div class="tc-role">Database + Auth + API</div><div class="tc-ver">v2 PostgreSQL</div></div>
+      <div class="tech-card"><div class="tc-icon">🟢</div><div class="tc-name">Supabase</div><div class="tc-role">Database and Auth</div><div class="tc-ver">v2 PostgreSQL</div></div>
       <div class="tech-card"><div class="tc-icon">🔑</div><div class="tc-name">JWT Auth</div><div class="tc-role">Session Management</div><div class="tc-ver">Via Supabase</div></div>
-      <div class="tech-card"><div class="tc-icon">🐘</div><div class="tc-name">PostgreSQL</div><div class="tc-role">Relational Database</div><div class="tc-ver">Hosted on Supabase</div></div>
+      <div class="tech-card"><div class="tc-icon">🐘</div><div class="tc-name">PostgreSQL</div><div class="tc-role">Relational Database</div><div class="tc-ver">Supabase Cloud</div></div>
       <div class="tech-card"><div class="tc-icon">🐙</div><div class="tc-name">GitHub</div><div class="tc-role">Version Control</div><div class="tc-ver">Private repo</div></div>
-      <div class="tech-card"><div class="tc-icon">🌍</div><div class="tc-name">GitHub Pages</div><div class="tc-role">Free Hosting</div><div class="tc-ver">Static deployment</div></div>
+      <div class="tech-card"><div class="tc-icon">🌍</div><div class="tc-name">GitHub Pages</div><div class="tc-role">Free Hosting</div><div class="tc-ver">Static deploy</div></div>
     </div>
   </div>
-</section>
-
-<!-- CTA -->
-<section style="background:var(--bg)">
-  <div class="inner">
-    <div class="cta-section fade">
-      <h2>Ready to see it <em>in action?</em></h2>
-      <p>Open the live demo — no sign-up required. Use Demo Mode to explore all features instantly.</p>
-      <div class="cta-btns">
-        <a class="cta-primary" href="app.html">🚀 Launch Live Demo</a>
-        <a class="cta-ghost" href="#features">← Back to Features</a>
-      </div>
+</div>
+<div class="section" style="background:#F4F7FF">
+  <div class="cta-box">
+    <h2>Ready to see it <span style="color:#C9A84C;font-style:italic">in action?</span></h2>
+    <p>Open the live demo — use Demo Mode to explore all features instantly. No sign-up required.</p>
+    <div class="cta-btns">
+      <a class="btn-gold" href="app.html">Launch Live Demo</a>
     </div>
   </div>
-</section>
-
-<!-- TEAM -->
-<section id="team" style="background:var(--white)">
-  <div class="inner">
-    <div class="stag"><span class="stag-txt">Team</span></div>
-    <h2>The people behind <em>PFM</em></h2>
+</div>
+<div class="section" style="background:#fff">
+  <div class="section-inner">
+    <div class="stag">Team</div>
+    <h2>The people behind <span>PFM</span></h2>
     <p class="sec-sub">A final year individual project developed under academic supervision.</p>
-    <div class="team-grid fade">
-      <div class="team-card">
-        <div class="team-av gold">BO</div>
-        <div>
-          <div class="team-name">Brian Omae</div>
-          <div class="team-role">Developer · BSc. Software Development</div>
-          <div class="team-detail">Reg. No. 22/03810 · KCA University<br/>Responsible for all design, development & documentation.</div>
-        </div>
-      </div>
-      <div class="team-card">
-        <div class="team-av navy">JK</div>
-        <div>
-          <div class="team-name">Mr. Joseph Muigai Kuria</div>
-          <div class="team-role">Academic Supervisor</div>
-          <div class="team-detail">Faculty of Computing & Information Management<br/>KCA University · Academic guidance & review.</div>
-        </div>
-      </div>
+    <div class="team-grid">
+      <div class="team-card"><div class="team-av av-gold">BO</div><div><div class="team-name">Brian Omae</div><div class="team-role">Developer · BSc. Software Development</div><div class="team-detail">Reg. No. 22/03810 · KCA University<br/>All design, development and documentation.</div></div></div>
+      <div class="team-card"><div class="team-av av-navy">JK</div><div><div class="team-name">Mr. Joseph Muigai Kuria</div><div class="team-role">Academic Supervisor</div><div class="team-detail">Faculty of Computing and Information Management<br/>KCA University · Academic guidance.</div></div></div>
     </div>
   </div>
-</section>
-
-<!-- FOOTER -->
+</div>
 <footer>
   <div class="footer-inner">
     <div>
-      <div class="footer-brand" style="margin-bottom:7px">
-        <div class="fi">💰</div>
-        <div class="fn">PFM — Personal Finance Manager</div>
-      </div>
-      <div class="footer-txt">Brian Omae · Reg. 22/03810 · BSc. Software Development · KCA University · 2026<br/>Supervisor: Mr. Joseph Muigai Kuria · Faculty of Computing & Information Management</div>
+      <div class="footer-name">PFM — Personal Finance Manager</div>
+      <div class="footer-txt">Brian Omae · Reg. 22/03810 · BSc. Software Development · KCA University · 2026<br/>Supervisor: Mr. Joseph Muigai Kuria · Faculty of Computing and Information Management</div>
     </div>
     <div class="footer-links">
       <a class="fl" href="#features">Features</a>
-      <a class="fl" href="#tech">Tech Stack</a>
       <a class="fl" href="#team">Team</a>
-      <a class="fl" href="app.html" style="color:var(--gold)">Launch App →</a>
+      <a class="fl" href="app.html" style="color:#C9A84C">Launch App</a>
     </div>
   </div>
 </footer>
-
-<script>
-// Mark all fade elements visible immediately as fallback
-document.querySelectorAll('.fade').forEach(el => el.classList.add('in'));
-// Then enhance with scroll animation
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.05 });
-document.querySelectorAll('.fade').forEach(el => {
-  el.classList.remove('in');
-  obs.observe(el);
-});
-</script>
 </body>
 </html>
